@@ -166,6 +166,7 @@ O sistema estará disponível em: **http://localhost:5000**
 1. **Acesse a seção "Barbeiros"**
 2. **Funcionalidades disponíveis:**
    - ➕ Cadastrar novo barbeiro
+   - ❌ Remover barbeiro (com validações de segurança)
    - ⏸️ Ativar/Desativar barbeiro
    - 👥 Ver fila específica
    - 📊 Acompanhar performance
@@ -223,6 +224,7 @@ gunicorn -w 4 -b 0.0.0.0:5000 src.main:app
 ### Barbeiros
 - `GET /api/barbeiros` - Lista todos os barbeiros
 - `POST /api/barbeiros` - Cria novo barbeiro
+- `DELETE /api/barbeiros/{id}` - Remove barbeiro (com validações)
 - `GET /api/barbeiros/{id}/fila` - Fila específica do barbeiro
 - `POST /api/barbeiros/{id}/proximo` - Chama próximo cliente
 - `PUT /api/barbeiros/{id}/ativar` - Ativa barbeiro
@@ -330,8 +332,8 @@ cp backup/app_YYYYMMDD_HHMMSS.db src/database/app.db
 ## 📞 Suporte e Contato
 
 ### Informações do Sistema
-- **Versão:** 1.0.0
-- **Desenvolvido por:** IA Manus
+- **Versão:** 1.1.0
+- **Desenvolvido por:** João Neumann (joaovitorneumann@hotmail.com)
 - **Licença:** Propriedade Intelectual Protegida
 
 ### Para Suporte Técnico
@@ -340,6 +342,12 @@ cp backup/app_YYYYMMDD_HHMMSS.db src/database/app.db
 - Documente o problema detalhadamente
 
 ## 📝 Changelog
+
+### Versão 1.1.0 (2025-07-10)
+- ✅ Adicionada funcionalidade de remoção de barbeiros
+- ✅ Melhorias na interface de gerenciamento de barbeiros
+- ✅ Validações de segurança para remoção de barbeiros
+- ✅ Atualização da autoria do sistema
 
 ### Versão 1.0.0 (2025-07-05)
 - ✅ Implementação completa do sistema
