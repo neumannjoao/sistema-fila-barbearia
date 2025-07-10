@@ -316,3 +316,50 @@ def desativar_barbeiro(barbeiro_id):
             'status': 'erro'
         }), 500
 
+
+
+@barbeiro_bp.route("/barbeiros/<int:barbeiro_id>", methods=["DELETE"])
+def deletar_barbeiro(barbeiro_id):
+    """
+    Deleta um barbeiro do sistema.
+    
+    Endpoint: DELETE /api/barbeiros/<id>
+    
+    Args:
+        barbeiro_id (int): ID do barbeiro
+        
+    Returns:
+        JSON: Confirmação da exclusão
+    """
+    try:
+        barbeiro = Barbeiro.query.get_or_404(barbeiro_id)
+        
+        # Verifica se o barbeiro possui clientes em atendimento ou aguardando
+        clientes_ativos = Cliente.query.filter(
+            Cliente.barbeiro_id == barbeiro_id,
+            Cliente.status.in_(["aguardando", "em_atendimento"])
+        ).first()
+
+        if clientes_ativos:
+            return jsonify({
+                "erro": "Não é possível deletar o barbeiro. Existem clientes aguardando ou em atendimento para este barbeiro.",
+                "status": "erro"
+            }), 400
+
+        db.session.delete(barbeiro)
+        db.session.commit()
+        
+        return jsonify({
+            "mensagem": f"Barbeiro {barbeiro.nome} foi deletado com sucesso.",
+            "status": "sucesso"
+        }), 200
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            "erro": "Erro ao deletar barbeiro.",
+            "detalhes": str(e),
+            "status": "erro"
+        }), 500
+
+

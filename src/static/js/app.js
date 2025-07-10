@@ -537,6 +537,11 @@ function renderizarListaBarbeiros() {
                             <i class="fas fa-users"></i>
                             Ver Fila
                         </button>
+                        <button class="btn btn-danger" 
+                                onclick="removerBarbeiro(${barbeiro.id})">
+                            <i class="fas fa-trash"></i>
+                            Remover
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1011,4 +1016,38 @@ window.atualizarDados = atualizarDados;
 window.atualizarFila = atualizarFila;
 
 console.log('📱 Sistema de Fila Digital - Frontend carregado com sucesso!');
+
+
+
+async function removerBarbeiro(barbeiroId) {
+    /**
+     * Remove um barbeiro do sistema.
+     * 
+     * @param {number} barbeiroId - ID do barbeiro
+     */
+    
+    if (!confirm("Tem certeza que deseja remover este barbeiro? Esta ação é irreversível e removerá todos os dados associados a ele.")) {
+        return;
+    }
+    
+    try {
+        const response = await apiCall(`/barbeiros/${barbeiroId}`, {
+            method: 'DELETE'
+        });
+        
+        mostrarToast('Sucesso', response.mensagem, 'success');
+        
+        await carregarBarbeiros();
+        if (appState.currentSection === 'barbeiros') {
+            renderizarListaBarbeiros();
+        }
+        
+    } catch (error) {
+        console.error('❌ Erro ao remover barbeiro:', error);
+    }
+}
+
+// Adicionando a função ao escopo global
+window.removerBarbeiro = removerBarbeiro;
+
 
